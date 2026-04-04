@@ -6,14 +6,9 @@
 //
 
 import Cocoa
-import LaunchAtLogin
-import Preferences
 import ServiceManagement
 
-final class GeneralPreferenceViewController: NSViewController, PreferencePane {
-    let preferencePaneIdentifier = Preferences.PaneIdentifier.general
-    let preferencePaneTitle = "General"
-    let toolbarItemIcon = NSImage(named: "gearshape")!
+final class GeneralPreferenceViewController: NSViewController {
 
     // Dummy nib; we'll build the UI programatically
     override func loadView() {
@@ -31,9 +26,9 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
 
     @objc func toggleLaunchOnLogin(sender: NSButton) {
         if sender.state == .on {
-            LaunchAtLogin.isEnabled = true
+            try? SMAppService.mainApp.register()
         } else {
-            LaunchAtLogin.isEnabled = false
+            try? SMAppService.mainApp.unregister()
         }
     }
 
@@ -108,26 +103,8 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         return (pasteMenu, pasteBezel)
     }
 
-    private func makeSparkleRow(settings: Settings) -> NSStackView {
-        let autoCheck = settings.checkbox(title: "Automatically check for updates", key: SettingsPath.checkForUpdates)
-        let checkNowButton = NSButton()
-        let delegate = (NSApplication.shared.delegate as? AppDelegate)!
-        checkNowButton.title = "Check Now"
-        checkNowButton.target = delegate
-        checkNowButton.action = #selector(delegate.checkSparkle(sender:))
-        checkNowButton.controlSize = .small
-        checkNowButton.bezelStyle = .rounded
-        let checkRow = NSStackView(views: [autoCheck, checkNowButton])
-        NSLayoutConstraint.activate([
-            autoCheck.leadingAnchor.constraint(greaterThanOrEqualTo: checkRow.leadingAnchor, constant: 0),
-            checkNowButton.trailingAnchor.constraint(greaterThanOrEqualTo: checkRow.trailingAnchor, constant: 0)
-        ])
-        return checkRow
-    }
-
     override func viewDidLoad() {
         let settings = Settings()
-        toolbarItemIcon.isTemplate = true
         self.preferredContentSize = CGSize(width: 480, height: 320)
         super.viewDidLoad()
 
@@ -142,7 +119,6 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         ])
         let advancedMenuRow = makeAdvancedMenuRow(settings: settings)
         let launchOnLogin = makeLaunchOnLogin(settings: settings)
-        let sparkleRow = makeSparkleRow(settings: settings)
         let bezelToTopRow = makeBezelToTopRow(settings: settings)
 
         let resetRow = makeResetRow()
@@ -150,7 +126,7 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         let grid = NSStackView(views: [
             pasteMenu, pasteBezel, bezelToTopRow, wrapBezel, stickyBezel,
             advancedMenuRow, makeSeparator(), stepperViews, makeSeparator(),
-            launchOnLogin, sparkleRow, makeSeparator(), resetRow
+            launchOnLogin, makeSeparator(), resetRow
         ])
         grid.orientation = .vertical
         grid.alignment = .leading

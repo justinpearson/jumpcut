@@ -6,7 +6,6 @@
 //
 
 import AppKit
-import Sauce
 
 class Pasteboard {
     private let internalPasteboardType = NSPasteboard.PasteboardType(rawValue: "net.sf.jumpcut.internal")
@@ -122,7 +121,7 @@ class Pasteboard {
         sourceRef!.setLocalEventsFilterDuringSuppressionState(
             [.permitLocalMouseEvents, .permitSystemDefinedEvents],
             state: .eventSuppressionStateSuppressionInterval)
-        let veeCode = Sauce.shared.keyCode(for: .v)
+        let veeCode = KeyboardLayoutManager.shared.keyCode(for: .v)
         sourceRef!.setLocalEventsFilterDuringSuppressionState(
             [.permitLocalMouseEvents, .permitSystemDefinedEvents],
             state: .eventSuppressionStateSuppressionInterval)

@@ -6,14 +6,9 @@
 //
 
 import Cocoa
-import HotKey
-import LaunchAtLogin
-import Preferences
-import Sauce
-import ShortcutRecorder
-import Sparkle
+import ServiceManagement
 
-class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardUserDriverDelegate, SPUUpdaterDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private var pasteboard: Pasteboard!
     private var stack: ClippingStack!
@@ -22,23 +17,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
     private let bezel = Bezel()
     private var hkListeners: HotkeyListeners!
     // Hotkey
-    private var hotKey: HotKey?
+    private var hotKey: GlobalHotKey?
     public var hotKeyBase: SauceKey?
     public var mainHotkeyIsRecording = false
-    // Sparkle
-    public var sparkleUpdater: SPUUpdater!
 
     // Logic for all our UX behaviors
     public var interactions: Interactions!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         Settings.registerDefaults()
-        // Initialize Sparkle
-        let bundle = Bundle.main
-        let sparkleDriver = SPUStandardUserDriver(hostBundle: bundle, delegate: self)
-        sparkleUpdater = SPUUpdater(
-            hostBundle: bundle, applicationBundle: bundle, userDriver: sparkleDriver, delegate: self
-        )
         statusItem = StatusItem()
         stack = ClippingStack()
         pasteboard = Pasteboard(changeCallback: pasteboardChangeClosure)
@@ -51,13 +38,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         hkListeners = HotkeyListeners()
 
         checkForSaveFileWarning()
-
-        let checkForUpdates = UserDefaults.standard.value(
-            forKey: SettingsPath.checkForUpdates.rawValue
-        ) as? Bool ?? false
-        if checkForUpdates {
-            checkSparkle(background: true)
-        }
 
         // NB:
         // hkListeners' methods; interactions.setHotkeyHandlers; and setHotkey
@@ -75,8 +55,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
 
         // If we are coming from an earlier version, let's set the new launch-on-login
         // preference. (This is safe to do under any circumstance.)
-        LaunchAtLogin.isEnabled = UserDefaults.standard.value(
+        let launchOnStartup = UserDefaults.standard.value(
             forKey: SettingsPath.launchOnStartup.rawValue) as? Bool ?? false
+        if launchOnStartup {
+            try? SMAppService.mainApp.register()
+        }
 
         // Should we show an alert here if we are headless?
         statusItem.setVisibility()
@@ -113,7 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateKeyboardCodes),
-            name: NSNotification.Name.SauceSelectedKeyboardKeyCodesChanged,
+            name: KeyboardLayoutManager.keyboardDidChangeNotification,
             object: nil
         )
     }
@@ -231,8 +214,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
             // *not* clear the hotkey—maybe the user will switch soon!—but *will*
             // return. No hotkey if we can't figure out how to map it!
             if let ignoringModifier = dictionary["charactersIgnoringModifiers"] as? String {
-                if let character = SauceKey.init(character: ignoringModifier, virtualKeyCode: nil) {
-                    let currentKeyCode = Sauce.shared.currentKeyCode(for: character)
+                if let character = KeyCode(character: ignoringModifier, virtualKeyCode: nil) {
+                    let currentKeyCode = KeyboardLayoutManager.shared.currentKeyCode(for: character)
                     if currentKeyCode != nil {
                         #if DEBUG
                         print("Updating key code to \(currentKeyCode!)")
@@ -244,14 +227,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
                     }
                 }
             }
-            let shortcut = Shortcut.init(dictionary: dictionary)
-            if shortcut == nil {
+            let shortcut = KeyboardShortcut(dictionary: dictionary)
+            guard let shortcut = shortcut else {
                 return
             }
             clearHotkey()
-            hotKey = HotKey.init(
-                carbonKeyCode: shortcut!.carbonKeyCode,
-                carbonModifiers: shortcut!.carbonModifierFlags
+            hotKey = GlobalHotKey(
+                carbonKeyCode: shortcut.carbonKeyCode,
+                carbonModifiers: shortcut.carbonModifierFlags
             )
             hotKey!.keyDownHandler = {
                 guard !self.mainHotkeyIsRecording else {
@@ -268,7 +251,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
             // Again, this uses the physical keyboard representation, rather than
             // the actual character. For instance, using Dvorak, "V" is actually
             // .period.
-            hotKeyBase = SauceKey.init(QWERTYKeyCode: keyCode)
+            hotKeyBase = KeyCode(QWERTYKeyCode: keyCode)
         } else {
             clearHotkey()
         }
@@ -307,26 +290,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         bezel.hide()
         preferencesWindowController.show()
         preferencesWindowController.window?.makeKeyAndOrderFront(sender)
-    }
-
-    // Called from a button, should be visible
-    @objc func checkSparkle(sender: Any?) {
-        checkSparkle(background: false)
-    }
-
-    private func checkSparkle(background: Bool) {
-        do {
-            try sparkleUpdater.start()
-            if background {
-                sparkleUpdater.checkForUpdatesInBackground()
-            } else {
-                sparkleUpdater.checkForUpdates()
-            }
-        } catch {
-            #if DEBUG
-            print("Unable to check Sparkle")
-            #endif
-        }
     }
 
     @objc func quit(sender: AnyObject?) {

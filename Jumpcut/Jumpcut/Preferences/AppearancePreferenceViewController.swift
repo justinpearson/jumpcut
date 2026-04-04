@@ -6,12 +6,8 @@
 //
 
 import Cocoa
-import Preferences
 
-final class AppearancePreferenceViewController: NSViewController, PreferencePane {
-    let preferencePaneIdentifier = Preferences.PaneIdentifier.appearance
-    let preferencePaneTitle = "Appearance"
-    let toolbarItemIcon = NSImage(named: "paintpalette")!
+final class AppearancePreferenceViewController: NSViewController {
 
     // Dummy nib; we'll build the UI programatically
     override func loadView() {
@@ -43,7 +39,6 @@ final class AppearancePreferenceViewController: NSViewController, PreferencePane
 
     override func viewDidLoad() {
         let settings = Settings()
-        toolbarItemIcon.isTemplate = true
         self.preferredContentSize = CGSize(width: 480, height: 180)
         super.viewDidLoad()
         let iconOptions = [

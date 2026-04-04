@@ -5,8 +5,8 @@
 //  Created by Steve Cook on 6/20/21.
 //
 
-// Workaround for the name collision on Key between Sauce and HotKey.
+// Previously held the SauceKey typealias for the Sauce library.
+// Now KeyCode is defined directly in KeyboardLayout.swift.
 import Foundation
-import Sauce
 
-typealias SauceKey = Key
+typealias SauceKey = KeyCode
