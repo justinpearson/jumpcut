@@ -29,9 +29,8 @@
 		AA3115D6280A618900CBAF91 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3115C2280A618900CBAF91 /* Types.swift */; };
 		AA3115D8280A618900CBAF91 /* Interactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3115C4280A618900CBAF91 /* Interactions.swift */; };
 		AA3115D9280A618900CBAF91 /* Pasteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3115C6280A618900CBAF91 /* Pasteboard.swift */; };
-		AA3115DF280A62A900CBAF91 /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = AA3115DE280A62A900CBAF91 /* HotKey */; };
+		AA3115DA280A618900CBAF91 /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3115D7280A618900CBAF91 /* KeyboardLayout.swift */; };
 		AA3115E2280A62B900CBAF91 /* ShortcutRecorder in Frameworks */ = {isa = PBXBuildFile; productRef = AA3115E1280A62B900CBAF91 /* ShortcutRecorder */; };
-		AA3115E5280A62CB00CBAF91 /* Sauce in Frameworks */ = {isa = PBXBuildFile; productRef = AA3115E4280A62CB00CBAF91 /* Sauce */; };
 		AA73BA942B0AB9D900B0EA1A /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA73BA932B0AB9D900B0EA1A /* Alerts.swift */; };
 		AAD0C443280B7CB6003482B4 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD0C442280B7CB6003482B4 /* ServiceManagement.framework */; platformFilter = maccatalyst; };
 /* End PBXBuildFile section */
@@ -81,6 +80,7 @@
 		AA3115C4280A618900CBAF91 /* Interactions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interactions.swift; sourceTree = "<group>"; };
 		AA3115C5280A618900CBAF91 /* Jumpcut.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Jumpcut.entitlements; sourceTree = "<group>"; };
 		AA3115C6280A618900CBAF91 /* Pasteboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pasteboard.swift; sourceTree = "<group>"; };
+		AA3115D7280A618900CBAF91 /* KeyboardLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardLayout.swift; sourceTree = "<group>"; };
 		AA73BA932B0AB9D900B0EA1A /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		AAD0C42D280B779F003482B4 /* JumpcutHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JumpcutHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAD0C442280B7CB6003482B4 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
@@ -91,10 +91,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA3115DF280A62A900CBAF91 /* HotKey in Frameworks */,
 				AA3115E2280A62B900CBAF91 /* ShortcutRecorder in Frameworks */,
 				AAD0C443280B7CB6003482B4 /* ServiceManagement.framework in Frameworks */,
-AA3115E5280A62CB00CBAF91 /* Sauce in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +171,7 @@ AA3115E5280A62CB00CBAF91 /* Sauce in Frameworks */,
 				AA16DB6D28393DD000F73A2C /* Constants.swift */,
 				AA3115B4280A618900CBAF91 /* HotkeyListeners.swift */,
 				AA3115C4280A618900CBAF91 /* Interactions.swift */,
+				AA3115D7280A618900CBAF91 /* KeyboardLayout.swift */,
 				AA3115BD280A618900CBAF91 /* MenuManager.swift */,
 				AA3115C6280A618900CBAF91 /* Pasteboard.swift */,
 				AA3115B7280A618900CBAF91 /* Settings.swift */,
@@ -223,9 +222,7 @@ AA3115E5280A62CB00CBAF91 /* Sauce in Frameworks */,
 			);
 			name = Jumpcut;
 			packageProductDependencies = (
-				AA3115DE280A62A900CBAF91 /* HotKey */,
 				AA3115E1280A62B900CBAF91 /* ShortcutRecorder */,
-				AA3115E4280A62CB00CBAF91 /* Sauce */,
 			);
 			productName = Jumpcut;
 			productReference = AA311586280A60DB00CBAF91 /* Jumpcut.app */;
@@ -321,9 +318,7 @@ AA3115E5280A62CB00CBAF91 /* Sauce in Frameworks */,
 			);
 			mainGroup = AA31157D280A60DB00CBAF91;
 			packageReferences = (
-				AA3115DD280A62A900CBAF91 /* XCRemoteSwiftPackageReference "HotKey" */,
 				AA3115E0280A62B900CBAF91 /* XCRemoteSwiftPackageReference "ShortcutRecorder" */,
-				AA3115E3280A62CB00CBAF91 /* XCRemoteSwiftPackageReference "Sauce" */,
 			);
 			productRefGroup = AA311587280A60DB00CBAF91 /* Products */;
 			projectDirPath = "";
@@ -387,6 +382,7 @@ AA3115E5280A62CB00CBAF91 /* Sauce in Frameworks */,
 				AA3115CE280A618900CBAF91 /* GeneralPreferenceViewController.swift in Sources */,
 				AA3115D0280A618900CBAF91 /* HotkeyPreferenceViewController.swift in Sources */,
 				AA3115D8280A618900CBAF91 /* Interactions.swift in Sources */,
+				AA3115DA280A618900CBAF91 /* KeyboardLayout.swift in Sources */,
 				AA3115CD280A618900CBAF91 /* StatusItem.swift in Sources */,
 				AA3115CA280A618900CBAF91 /* ClippingsPreferenceViewController.swift in Sources */,
 				AA3115CC280A618900CBAF91 /* PreferenceWindow.swift in Sources */,
@@ -801,14 +797,6 @@ AA3115E5280A62CB00CBAF91 /* Sauce in Frameworks */,
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AA3115DD280A62A900CBAF91 /* XCRemoteSwiftPackageReference "HotKey" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/soffes/HotKey";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		AA3115E0280A62B900CBAF91 /* XCRemoteSwiftPackageReference "ShortcutRecorder" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Kentzo/ShortcutRecorder";
@@ -817,31 +805,13 @@ AA3115E5280A62CB00CBAF91 /* Sauce in Frameworks */,
 				minimumVersion = 3.0.0;
 			};
 		};
-		AA3115E3280A62CB00CBAF91 /* XCRemoteSwiftPackageReference "Sauce" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Clipy/Sauce";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AA3115DE280A62A900CBAF91 /* HotKey */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AA3115DD280A62A900CBAF91 /* XCRemoteSwiftPackageReference "HotKey" */;
-			productName = HotKey;
-		};
 		AA3115E1280A62B900CBAF91 /* ShortcutRecorder */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AA3115E0280A62B900CBAF91 /* XCRemoteSwiftPackageReference "ShortcutRecorder" */;
 			productName = ShortcutRecorder;
-		};
-		AA3115E4280A62CB00CBAF91 /* Sauce */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AA3115E3280A62CB00CBAF91 /* XCRemoteSwiftPackageReference "Sauce" */;
-			productName = Sauce;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

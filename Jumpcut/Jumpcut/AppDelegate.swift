@@ -6,9 +6,7 @@
 //
 
 import Cocoa
-import HotKey
 import ServiceManagement
-import Sauce
 import ShortcutRecorder
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
@@ -19,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private let bezel = Bezel()
     private var hkListeners: HotkeyListeners!
     // Hotkey
-    private var hotKey: HotKey?
+    private var hotKey: HotKeyManager?
     public var hotKeyBase: SauceKey?
     public var mainHotkeyIsRecording = false
 
@@ -96,7 +94,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateKeyboardCodes),
-            name: NSNotification.Name.SauceSelectedKeyboardKeyCodesChanged,
+            name: KeyboardLayout.inputSourceChangedNotification,
             object: nil
         )
     }
@@ -215,7 +213,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             // return. No hotkey if we can't figure out how to map it!
             if let ignoringModifier = dictionary["charactersIgnoringModifiers"] as? String {
                 if let character = SauceKey.init(character: ignoringModifier, virtualKeyCode: nil) {
-                    let currentKeyCode = Sauce.shared.currentKeyCode(for: character)
+                    let currentKeyCode = KeyboardLayout.shared.currentKeyCode(for: character)
                     if currentKeyCode != nil {
                         #if DEBUG
                         print("Updating key code to \(currentKeyCode!)")
@@ -227,12 +225,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                     }
                 }
             }
-            let shortcut = Shortcut.init(dictionary: dictionary)
+            let shortcut = ShortcutData(dictionary: dictionary)
             if shortcut == nil {
                 return
             }
             clearHotkey()
-            hotKey = HotKey.init(
+            hotKey = HotKeyManager(
                 carbonKeyCode: shortcut!.carbonKeyCode,
                 carbonModifiers: shortcut!.carbonModifierFlags
             )

@@ -1,24 +1,6 @@
 {
-  "originHash" : "525da6a1bef8326781197ae8cdc06f3876334a5643e4ca77e9fb0b64d6bbb281",
+  "originHash" : "0e384404867419f3da3da59ee70e4fe8e55017cf6e9a247995b86fe7358fdde7",
   "pins" : [
-    {
-      "identity" : "hotkey",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/soffes/HotKey",
-      "state" : {
-        "branch" : "master",
-        "revision" : "c13662730cb5bc28de4a799854bbb018a90649bf"
-      }
-    },
-    {
-      "identity" : "sauce",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Clipy/Sauce",
-      "state" : {
-        "branch" : "master",
-        "revision" : "cb04052f0f45ed1615543a3693bf3b2f911ce4ba"
-      }
-    },
     {
       "identity" : "shortcutrecorder",
       "kind" : "remoteSourceControl",
