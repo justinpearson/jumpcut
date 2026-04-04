@@ -7,7 +7,6 @@
 
 import Cocoa
 import HotKey
-import Preferences
 import ServiceManagement
 import Sauce
 import ShortcutRecorder

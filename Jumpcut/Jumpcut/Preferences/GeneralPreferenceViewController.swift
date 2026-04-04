@@ -6,11 +6,9 @@
 //
 
 import Cocoa
-import Preferences
 import ServiceManagement
 
 final class GeneralPreferenceViewController: NSViewController, PreferencePane {
-    let preferencePaneIdentifier = Preferences.PaneIdentifier.general
     let preferencePaneTitle = "General"
     let toolbarItemIcon = NSImage(named: "gearshape")!
 

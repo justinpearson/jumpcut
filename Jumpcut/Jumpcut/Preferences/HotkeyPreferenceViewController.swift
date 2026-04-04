@@ -6,10 +6,8 @@
 //
 
 import Cocoa
-import Preferences
 
 final class HotkeyPreferenceViewController: NSViewController, PreferencePane {
-    let preferencePaneIdentifier = Preferences.PaneIdentifier.hotkey
     let preferencePaneTitle = "Hotkey"
     let toolbarItemIcon = NSImage(named: "command.square")!
 

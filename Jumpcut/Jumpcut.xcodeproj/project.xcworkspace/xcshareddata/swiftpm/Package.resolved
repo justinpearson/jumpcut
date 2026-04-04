@@ -1,5 +1,5 @@
 {
-  "originHash" : "9482e058812e4ec45409e3465337312136bb97d88e8c8b526d150a6419d4b104",
+  "originHash" : "525da6a1bef8326781197ae8cdc06f3876334a5643e4ca77e9fb0b64d6bbb281",
   "pins" : [
     {
       "identity" : "hotkey",
@@ -8,15 +8,6 @@
       "state" : {
         "branch" : "master",
         "revision" : "c13662730cb5bc28de4a799854bbb018a90649bf"
-      }
-    },
-    {
-      "identity" : "preferences",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sindresorhus/Preferences",
-      "state" : {
-        "branch" : "main",
-        "revision" : "ffeaaad1def45d0625720dc1adae3789cd9c167d"
       }
     },
     {

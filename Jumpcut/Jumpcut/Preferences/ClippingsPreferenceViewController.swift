@@ -6,10 +6,8 @@
 //
 
 import Cocoa
-import Preferences
 
 final class ClippingsPreferenceViewController: NSViewController, PreferencePane {
-    let preferencePaneIdentifier = Preferences.PaneIdentifier.clippings
     let preferencePaneTitle = "Clippings"
     let toolbarItemIcon = NSImage(named: "paperclip")!
     var skipSaveButton: NSButton?
