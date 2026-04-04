@@ -7,7 +7,6 @@
 
 import Cocoa
 import ServiceManagement
-import ShortcutRecorder
 
 /* A set of user interface elements bound to our user defaults. */
 
@@ -104,42 +103,6 @@ class FixedButton: NSButton {
     }
 }
 
-/*
- We want to entirely encapsulate the ShortcutRecorder behavior
- in our nice setup methods, but in some cases we're going to
- need insight into what's going on. As such, we'll make a
- delegate wrapper, and dispatch NotificationCenter messages
- about start-recording, end-recording, and hotkey-changed
- events.
-*/
-private class NotifyingRecorderControl: RecorderControl, RecorderControlDelegate {
-    var key: SettingsPath!
-
-    convenience init(_ pathKey: SettingsPath) {
-        self.init(frame: .zero)
-        delegate = self
-        key = pathKey
-    }
-
-    func recorderControlDidBeginRecording(_ aControl: RecorderControl) {
-        if let myKey = key {
-            let message = "recorderBeganRecording.\(myKey)"
-            NotificationCenter.default
-                        .post(name: NSNotification.Name(message),
-                         object: nil)
-        }
-    }
-
-    func recorderControlDidEndRecording(_ aControl: RecorderControl) {
-        if let myKey = key {
-            let message = "recorderEndedRecording.\(myKey)"
-            NotificationCenter.default
-                        .post(name: NSNotification.Name(message),
-                         object: nil)
-        }
-    }
-
-}
 
 public class PreferencePopupButton: NSPopUpButton {
     var key: SettingsPath
@@ -276,12 +239,10 @@ public class Settings: NSObject {
 
     func shortcutRecorder(title: String, key: SettingsPath) -> NSStackView {
         let label = makeLabel(title: title)
-        let recorder = NotifyingRecorderControl(key)
+        let recorder = ShortcutRecorderView(frame: .zero)
+        recorder.settingsKey = key
         recorder.bind(.value, to: UserDefaults.standard, withKeyPath: key.rawValue, options: nil)
-        var recorderArray = [NSView]()
-        recorderArray.append(label)
-        recorderArray.append(recorder)
-        return NSStackView(views: recorderArray)
+        return NSStackView(views: [label, recorder])
     }
 
     func rangeStepper(title: String = "", minValue: Int, maxValue: Int, key: SettingsPath) -> NSStackView {

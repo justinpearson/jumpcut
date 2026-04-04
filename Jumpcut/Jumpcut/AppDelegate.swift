@@ -7,7 +7,6 @@
 
 import Cocoa
 import ServiceManagement
-import ShortcutRecorder
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private var pasteboard: Pasteboard!
