@@ -7,8 +7,8 @@
 
 import Cocoa
 import HotKey
-import LaunchAtLogin
 import Preferences
+import ServiceManagement
 import Sauce
 import ShortcutRecorder
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
@@ -58,8 +58,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         // If we are coming from an earlier version, let's set the new launch-on-login
         // preference. (This is safe to do under any circumstance.)
-        LaunchAtLogin.isEnabled = UserDefaults.standard.value(
+        let launchOnStartup = UserDefaults.standard.value(
             forKey: SettingsPath.launchOnStartup.rawValue) as? Bool ?? false
+        SMLoginItemSetEnabled("net.sf.Jumpcut.JumpcutHelper" as CFString, launchOnStartup)
 
         // Should we show an alert here if we are headless?
         statusItem.setVisibility()

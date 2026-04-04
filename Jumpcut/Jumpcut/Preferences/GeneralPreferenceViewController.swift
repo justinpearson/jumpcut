@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import LaunchAtLogin
 import Preferences
 import ServiceManagement
 
@@ -30,11 +29,8 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
     }
 
     @objc func toggleLaunchOnLogin(sender: NSButton) {
-        if sender.state == .on {
-            LaunchAtLogin.isEnabled = true
-        } else {
-            LaunchAtLogin.isEnabled = false
-        }
+        let enabled = sender.state == .on
+        SMLoginItemSetEnabled("net.sf.Jumpcut.JumpcutHelper" as CFString, enabled)
     }
 
     private func makeSeparator() -> NSBox {
