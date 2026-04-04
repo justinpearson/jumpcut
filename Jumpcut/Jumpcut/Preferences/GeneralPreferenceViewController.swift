@@ -137,7 +137,6 @@ final class GeneralPreferenceViewController: NSViewController {
             grid.topAnchor.constraint(greaterThanOrEqualTo: self.view.topAnchor, constant: 24),
             grid.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48),
             stepperViews.leadingAnchor.constraint(equalTo: grid.leadingAnchor, constant: 10),
-            sparkleRow.widthAnchor.constraint(equalTo: grid.widthAnchor),
             resetRow.widthAnchor.constraint(equalTo: grid.widthAnchor)
         ])
     }
