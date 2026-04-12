@@ -1,0 +1,43 @@
+# Dependabot configuration
+# Docs: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+version: 2
+updates:
+  # Keep GitHub Actions used by workflows in .github/workflows/ up to date.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # Keep Swift Package Manager dependencies used by the Xcode project up to date.
+  # Dependabot reads Package.resolved alongside the Xcode project. Version updates
+  # only apply to packages pinned to semver tags; branch-pinned packages
+  # (currently HotKey, Preferences, Sauce) will still receive security alerts but
+  # not automated version-bump PRs.
+  - package-ecosystem: "swift"
+    directory: "/Jumpcut"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "swift"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      swift-packages:
+        patterns:
+          - "*"
