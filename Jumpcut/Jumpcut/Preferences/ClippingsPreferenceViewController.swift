@@ -6,12 +6,8 @@
 //
 
 import Cocoa
-import Preferences
 
-final class ClippingsPreferenceViewController: NSViewController, PreferencePane {
-    let preferencePaneIdentifier = Preferences.PaneIdentifier.clippings
-    let preferencePaneTitle = "Clippings"
-    let toolbarItemIcon = NSImage(named: "paperclip")!
+final class ClippingsPreferenceViewController: NSViewController {
     var skipSaveButton: NSButton?
 
     // Dummy nib; we'll build the UI programatically
@@ -22,7 +18,6 @@ final class ClippingsPreferenceViewController: NSViewController, PreferencePane 
 
     override func viewDidLoad() {
         let settings = Settings()
-        toolbarItemIcon.isTemplate = true
         self.preferredContentSize = CGSize(width: 480, height: 180)
         super.viewDidLoad()
         let btn1 = settings.checkbox(

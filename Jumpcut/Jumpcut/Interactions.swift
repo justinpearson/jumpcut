@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import Sauce
 
 public class Interactions: NSObject {
     /*

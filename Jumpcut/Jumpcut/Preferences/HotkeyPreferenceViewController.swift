@@ -6,12 +6,8 @@
 //
 
 import Cocoa
-import Preferences
 
-final class HotkeyPreferenceViewController: NSViewController, PreferencePane {
-    let preferencePaneIdentifier = Preferences.PaneIdentifier.hotkey
-    let preferencePaneTitle = "Hotkey"
-    let toolbarItemIcon = NSImage(named: "command.square")!
+final class HotkeyPreferenceViewController: NSViewController {
 
     // Dummy nib; we'll build the UI programatically
     override func loadView() {
@@ -21,7 +17,6 @@ final class HotkeyPreferenceViewController: NSViewController, PreferencePane {
 
     override func viewDidLoad() {
         let settings = Settings()
-        toolbarItemIcon.isTemplate = true
         self.preferredContentSize = CGSize(width: 480, height: 180)
         super.viewDidLoad()
         let recorder = settings.shortcutRecorder(title: "Main hotkey", key: .mainHotkey)
