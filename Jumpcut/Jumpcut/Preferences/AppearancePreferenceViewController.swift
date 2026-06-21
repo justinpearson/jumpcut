@@ -6,10 +6,8 @@
 //
 
 import Cocoa
-import Preferences
 
 final class AppearancePreferenceViewController: NSViewController, PreferencePane {
-    let preferencePaneIdentifier = Preferences.PaneIdentifier.appearance
     let preferencePaneTitle = "Appearance"
     let toolbarItemIcon = NSImage(named: "paintpalette")!
 

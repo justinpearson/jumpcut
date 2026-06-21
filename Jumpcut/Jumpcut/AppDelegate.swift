@@ -6,14 +6,8 @@
 //
 
 import Cocoa
-import HotKey
-import LaunchAtLogin
-import Preferences
-import Sauce
-import ShortcutRecorder
-import Sparkle
-
-class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardUserDriverDelegate, SPUUpdaterDelegate {
+import ServiceManagement
+class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private var pasteboard: Pasteboard!
     private var stack: ClippingStack!
@@ -22,23 +16,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
     private let bezel = Bezel()
     private var hkListeners: HotkeyListeners!
     // Hotkey
-    private var hotKey: HotKey?
+    private var hotKey: HotKeyManager?
     public var hotKeyBase: SauceKey?
     public var mainHotkeyIsRecording = false
-    // Sparkle
-    public var sparkleUpdater: SPUUpdater!
 
     // Logic for all our UX behaviors
     public var interactions: Interactions!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         Settings.registerDefaults()
-        // Initialize Sparkle
-        let bundle = Bundle.main
-        let sparkleDriver = SPUStandardUserDriver(hostBundle: bundle, delegate: self)
-        sparkleUpdater = SPUUpdater(
-            hostBundle: bundle, applicationBundle: bundle, userDriver: sparkleDriver, delegate: self
-        )
         statusItem = StatusItem()
         stack = ClippingStack()
         pasteboard = Pasteboard(changeCallback: pasteboardChangeClosure)
@@ -51,13 +37,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         hkListeners = HotkeyListeners()
 
         checkForSaveFileWarning()
-
-        let checkForUpdates = UserDefaults.standard.value(
-            forKey: SettingsPath.checkForUpdates.rawValue
-        ) as? Bool ?? false
-        if checkForUpdates {
-            checkSparkle(background: true)
-        }
 
         // NB:
         // hkListeners' methods; interactions.setHotkeyHandlers; and setHotkey
@@ -75,8 +54,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
 
         // If we are coming from an earlier version, let's set the new launch-on-login
         // preference. (This is safe to do under any circumstance.)
-        LaunchAtLogin.isEnabled = UserDefaults.standard.value(
+        let launchOnStartup = UserDefaults.standard.value(
             forKey: SettingsPath.launchOnStartup.rawValue) as? Bool ?? false
+        SMLoginItemSetEnabled("net.sf.Jumpcut.JumpcutHelper" as CFString, launchOnStartup)
 
         // Should we show an alert here if we are headless?
         statusItem.setVisibility()
@@ -113,7 +93,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateKeyboardCodes),
-            name: NSNotification.Name.SauceSelectedKeyboardKeyCodesChanged,
+            name: KeyboardLayout.inputSourceChangedNotification,
             object: nil
         )
     }
@@ -232,7 +212,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
             // return. No hotkey if we can't figure out how to map it!
             if let ignoringModifier = dictionary["charactersIgnoringModifiers"] as? String {
                 if let character = SauceKey.init(character: ignoringModifier, virtualKeyCode: nil) {
-                    let currentKeyCode = Sauce.shared.currentKeyCode(for: character)
+                    let currentKeyCode = KeyboardLayout.shared.currentKeyCode(for: character)
                     if currentKeyCode != nil {
                         #if DEBUG
                         print("Updating key code to \(currentKeyCode!)")
@@ -244,12 +224,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
                     }
                 }
             }
-            let shortcut = Shortcut.init(dictionary: dictionary)
+            let shortcut = ShortcutData(dictionary: dictionary)
             if shortcut == nil {
                 return
             }
             clearHotkey()
-            hotKey = HotKey.init(
+            hotKey = HotKeyManager(
                 carbonKeyCode: shortcut!.carbonKeyCode,
                 carbonModifiers: shortcut!.carbonModifierFlags
             )
@@ -307,26 +287,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         bezel.hide()
         preferencesWindowController.show()
         preferencesWindowController.window?.makeKeyAndOrderFront(sender)
-    }
-
-    // Called from a button, should be visible
-    @objc func checkSparkle(sender: Any?) {
-        checkSparkle(background: false)
-    }
-
-    private func checkSparkle(background: Bool) {
-        do {
-            try sparkleUpdater.start()
-            if background {
-                sparkleUpdater.checkForUpdatesInBackground()
-            } else {
-                sparkleUpdater.checkForUpdates()
-            }
-        } catch {
-            #if DEBUG
-            print("Unable to check Sparkle")
-            #endif
-        }
     }
 
     @objc func quit(sender: AnyObject?) {
