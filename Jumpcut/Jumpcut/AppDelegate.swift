@@ -283,7 +283,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @objc func openAboutWindow(sender: AnyObject?) {
         bezel.hide()
-        NSApplication.shared.orderFrontStandardAboutPanel()
+        // Build provenance: the short git SHA is stamped into Info.plist at
+        // build time (JumpcutGitSHA = $(JUMPCUT_GIT_SHA)) so the About panel can
+        // confirm which commit the running binary was actually built from.
+        var build = Bundle.main.infoDictionary?["JumpcutGitSHA"] as? String ?? ""
+        if build.isEmpty || build.contains("$(") {
+            build = "dev"
+        }
+        NSApplication.shared.orderFrontStandardAboutPanel(options: [.version: "git \(build)"])
         NSApp.activate(ignoringOtherApps: true)
     }
 
