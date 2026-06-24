@@ -32,6 +32,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
     public var interactions: Interactions!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // When hosted by XCTest, skip the full bootstrap (pasteboard polling,
+        // hotkey registration, plist load/save) so unit tests stay hermetic and
+        // never read or mutate the user's real clipping history on disk.
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            return
+        }
         Settings.registerDefaults()
         // Initialize Sparkle
         let bundle = Bundle.main
