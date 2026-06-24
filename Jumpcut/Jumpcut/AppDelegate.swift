@@ -281,16 +281,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
 
+    // The short git SHA the running binary was built from, stamped into
+    // Info.plist at build time (JumpcutGitSHA = $(JUMPCUT_GIT_SHA)). Returns
+    // "dev" for an unstamped build (e.g. a plain Xcode GUI build). Shown in
+    // both the About panel and the status-bar menu so the running build is
+    // identifiable end-to-end.
+    public static var buildSHA: String {
+        let sha = Bundle.main.infoDictionary?["JumpcutGitSHA"] as? String ?? ""
+        return (sha.isEmpty || sha.contains("$(")) ? "dev" : sha
+    }
+
     @objc func openAboutWindow(sender: AnyObject?) {
         bezel.hide()
-        // Build provenance: the short git SHA is stamped into Info.plist at
-        // build time (JumpcutGitSHA = $(JUMPCUT_GIT_SHA)) so the About panel can
-        // confirm which commit the running binary was actually built from.
-        var build = Bundle.main.infoDictionary?["JumpcutGitSHA"] as? String ?? ""
-        if build.isEmpty || build.contains("$(") {
-            build = "dev"
-        }
-        NSApplication.shared.orderFrontStandardAboutPanel(options: [.version: "git \(build)"])
+        NSApplication.shared.orderFrontStandardAboutPanel(options: [.version: "git \(AppDelegate.buildSHA)"])
         NSApp.activate(ignoringOtherApps: true)
     }
 
