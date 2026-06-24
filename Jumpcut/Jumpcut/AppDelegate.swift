@@ -11,9 +11,8 @@ import LaunchAtLogin
 import Preferences
 import Sauce
 import ShortcutRecorder
-import Sparkle
 
-class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardUserDriverDelegate, SPUUpdaterDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private var pasteboard: Pasteboard!
     private var stack: ClippingStack!
@@ -25,8 +24,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
     private var hotKey: HotKey?
     public var hotKeyBase: SauceKey?
     public var mainHotkeyIsRecording = false
-    // Sparkle
-    public var sparkleUpdater: SPUUpdater!
 
     // Logic for all our UX behaviors
     public var interactions: Interactions!
@@ -39,12 +36,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
             return
         }
         Settings.registerDefaults()
-        // Initialize Sparkle
-        let bundle = Bundle.main
-        let sparkleDriver = SPUStandardUserDriver(hostBundle: bundle, delegate: self)
-        sparkleUpdater = SPUUpdater(
-            hostBundle: bundle, applicationBundle: bundle, userDriver: sparkleDriver, delegate: self
-        )
         statusItem = StatusItem()
         stack = ClippingStack()
         pasteboard = Pasteboard(changeCallback: pasteboardChangeClosure)
@@ -57,13 +48,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         hkListeners = HotkeyListeners()
 
         checkForSaveFileWarning()
-
-        let checkForUpdates = UserDefaults.standard.value(
-            forKey: SettingsPath.checkForUpdates.rawValue
-        ) as? Bool ?? false
-        if checkForUpdates {
-            checkSparkle(background: true)
-        }
 
         // NB:
         // hkListeners' methods; interactions.setHotkeyHandlers; and setHotkey
@@ -313,26 +297,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         bezel.hide()
         preferencesWindowController.show()
         preferencesWindowController.window?.makeKeyAndOrderFront(sender)
-    }
-
-    // Called from a button, should be visible
-    @objc func checkSparkle(sender: Any?) {
-        checkSparkle(background: false)
-    }
-
-    private func checkSparkle(background: Bool) {
-        do {
-            try sparkleUpdater.start()
-            if background {
-                sparkleUpdater.checkForUpdatesInBackground()
-            } else {
-                sparkleUpdater.checkForUpdates()
-            }
-        } catch {
-            #if DEBUG
-            print("Unable to check Sparkle")
-            #endif
-        }
     }
 
     @objc func quit(sender: AnyObject?) {
