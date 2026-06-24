@@ -1,5 +1,5 @@
 {
-  "originHash" : "ea553b0b215b5739aa4717a6ddf54230ed476517a7cfd98db5709eb4bf82cdbd",
+  "originHash" : "9482e058812e4ec45409e3465337312136bb97d88e8c8b526d150a6419d4b104",
   "pins" : [
     {
       "identity" : "hotkey",
@@ -8,15 +8,6 @@
       "state" : {
         "branch" : "master",
         "revision" : "c13662730cb5bc28de4a799854bbb018a90649bf"
-      }
-    },
-    {
-      "identity" : "launchatlogin",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sindresorhus/LaunchAtLogin",
-      "state" : {
-        "revision" : "e8171b3e38a2816f579f58f3dac1522aa39efe41",
-        "version" : "4.2.0"
       }
     },
     {

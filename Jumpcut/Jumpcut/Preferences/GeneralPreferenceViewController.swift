@@ -6,9 +6,7 @@
 //
 
 import Cocoa
-import LaunchAtLogin
 import Preferences
-import ServiceManagement
 
 final class GeneralPreferenceViewController: NSViewController, PreferencePane {
     let preferencePaneIdentifier = Preferences.PaneIdentifier.general
@@ -26,14 +24,6 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         let response = alert.runModal()
         if response == .alertFirstButtonReturn {
             Settings.reset()
-        }
-    }
-
-    @objc func toggleLaunchOnLogin(sender: NSButton) {
-        if sender.state == .on {
-            LaunchAtLogin.isEnabled = true
-        } else {
-            LaunchAtLogin.isEnabled = false
         }
     }
 
@@ -82,15 +72,6 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         return resetRow
     }
 
-    private func makeLaunchOnLogin(settings: Settings) -> NSButton {
-        return settings.checkbox(
-            title: "Launch on login",
-            key: SettingsPath.launchOnStartup,
-            target: self,
-            action: #selector(self.toggleLaunchOnLogin)
-        )
-    }
-
     private func makePasteOptions(settings: Settings) -> (NSButton, NSButton) {
         let accessibilityActive = AXIsProcessTrusted()
         let pasteMenu = settings.checkbox(
@@ -124,7 +105,6 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
             displayNumView.leadingAnchor.constraint(equalTo: rememberNumView.leadingAnchor, constant: 160)
         ])
         let advancedMenuRow = makeAdvancedMenuRow(settings: settings)
-        let launchOnLogin = makeLaunchOnLogin(settings: settings)
         let bezelToTopRow = makeBezelToTopRow(settings: settings)
 
         let resetRow = makeResetRow()
@@ -132,7 +112,7 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         let grid = NSStackView(views: [
             pasteMenu, pasteBezel, bezelToTopRow, wrapBezel, stickyBezel,
             advancedMenuRow, makeSeparator(), stepperViews, makeSeparator(),
-            launchOnLogin, makeSeparator(), resetRow
+            resetRow
         ])
         grid.orientation = .vertical
         grid.alignment = .leading
