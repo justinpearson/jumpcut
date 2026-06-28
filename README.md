@@ -1,3 +1,20 @@
+
+
+# Jumpcut - Justin's fork
+
+- Strip away 3rd-party libs to reduce supply-chain attacks
+	- no auto-updating (Sparkle) ((TODO: link to Sparkle src code))
+	- no fancy multi-tab Preferences pane ((TODO: same))
+	- no support for non-qwerty keyboard layouts (Sauce) ((TODO: same))
+	- no launch at login (LaunchAtLogin) ((TODO: same))
+
+
+- TODO
+	- add test coverage
+	- finish removing 3rd party libs
+	- convert to normal app (with app icon that shows up in cmd-tab app cycling, and whose app name appears in top menu bar when app is selected)
+
+
 About
 =====
 
