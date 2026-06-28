@@ -7,13 +7,11 @@
 
 import Cocoa
 import HotKey
-import LaunchAtLogin
 import Preferences
 import Sauce
 import ShortcutRecorder
-import Sparkle
 
-class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardUserDriverDelegate, SPUUpdaterDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private var pasteboard: Pasteboard!
     private var stack: ClippingStack!
@@ -25,20 +23,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
     private var hotKey: HotKey?
     public var hotKeyBase: SauceKey?
     public var mainHotkeyIsRecording = false
-    // Sparkle
-    public var sparkleUpdater: SPUUpdater!
 
     // Logic for all our UX behaviors
     public var interactions: Interactions!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // When hosted by XCTest, skip the full bootstrap (pasteboard polling,
+        // hotkey registration, plist load/save) so unit tests stay hermetic and
+        // never read or mutate the user's real clipping history on disk.
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            return
+        }
         Settings.registerDefaults()
-        // Initialize Sparkle
-        let bundle = Bundle.main
-        let sparkleDriver = SPUStandardUserDriver(hostBundle: bundle, delegate: self)
-        sparkleUpdater = SPUUpdater(
-            hostBundle: bundle, applicationBundle: bundle, userDriver: sparkleDriver, delegate: self
-        )
         statusItem = StatusItem()
         stack = ClippingStack()
         pasteboard = Pasteboard(changeCallback: pasteboardChangeClosure)
@@ -51,13 +47,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         hkListeners = HotkeyListeners()
 
         checkForSaveFileWarning()
-
-        let checkForUpdates = UserDefaults.standard.value(
-            forKey: SettingsPath.checkForUpdates.rawValue
-        ) as? Bool ?? false
-        if checkForUpdates {
-            checkSparkle(background: true)
-        }
 
         // NB:
         // hkListeners' methods; interactions.setHotkeyHandlers; and setHotkey
@@ -72,11 +61,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         // Set up hotkey and bezel handlers
         setHotkey()
         interactions.setHotkeyHandlers()
-
-        // If we are coming from an earlier version, let's set the new launch-on-login
-        // preference. (This is safe to do under any circumstance.)
-        LaunchAtLogin.isEnabled = UserDefaults.standard.value(
-            forKey: SettingsPath.launchOnStartup.rawValue) as? Bool ?? false
 
         // Should we show an alert here if we are headless?
         statusItem.setVisibility()
@@ -297,9 +281,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         }
     }
 
+    // The short git SHA the running binary was built from, stamped into
+    // Info.plist at build time (JumpcutGitSHA = $(JUMPCUT_GIT_SHA)). Returns
+    // "dev" for an unstamped build (e.g. a plain Xcode GUI build). Shown in
+    // both the About panel and the status-bar menu so the running build is
+    // identifiable end-to-end.
+    public static var buildSHA: String {
+        let sha = Bundle.main.infoDictionary?["JumpcutGitSHA"] as? String ?? ""
+        return (sha.isEmpty || sha.contains("$(")) ? "dev" : sha
+    }
+
     @objc func openAboutWindow(sender: AnyObject?) {
         bezel.hide()
-        NSApplication.shared.orderFrontStandardAboutPanel()
+        NSApplication.shared.orderFrontStandardAboutPanel(options: [.version: "git \(AppDelegate.buildSHA)"])
         NSApp.activate(ignoringOtherApps: true)
     }
 
@@ -307,26 +301,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, SPUStandardU
         bezel.hide()
         preferencesWindowController.show()
         preferencesWindowController.window?.makeKeyAndOrderFront(sender)
-    }
-
-    // Called from a button, should be visible
-    @objc func checkSparkle(sender: Any?) {
-        checkSparkle(background: false)
-    }
-
-    private func checkSparkle(background: Bool) {
-        do {
-            try sparkleUpdater.start()
-            if background {
-                sparkleUpdater.checkForUpdatesInBackground()
-            } else {
-                sparkleUpdater.checkForUpdates()
-            }
-        } catch {
-            #if DEBUG
-            print("Unable to check Sparkle")
-            #endif
-        }
     }
 
     @objc func quit(sender: AnyObject?) {

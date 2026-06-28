@@ -6,9 +6,7 @@
 //
 
 import Cocoa
-import LaunchAtLogin
 import Preferences
-import ServiceManagement
 
 final class GeneralPreferenceViewController: NSViewController, PreferencePane {
     let preferencePaneIdentifier = Preferences.PaneIdentifier.general
@@ -26,14 +24,6 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         let response = alert.runModal()
         if response == .alertFirstButtonReturn {
             Settings.reset()
-        }
-    }
-
-    @objc func toggleLaunchOnLogin(sender: NSButton) {
-        if sender.state == .on {
-            LaunchAtLogin.isEnabled = true
-        } else {
-            LaunchAtLogin.isEnabled = false
         }
     }
 
@@ -82,15 +72,6 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         return resetRow
     }
 
-    private func makeLaunchOnLogin(settings: Settings) -> NSButton {
-        return settings.checkbox(
-            title: "Launch on login",
-            key: SettingsPath.launchOnStartup,
-            target: self,
-            action: #selector(self.toggleLaunchOnLogin)
-        )
-    }
-
     private func makePasteOptions(settings: Settings) -> (NSButton, NSButton) {
         let accessibilityActive = AXIsProcessTrusted()
         let pasteMenu = settings.checkbox(
@@ -106,23 +87,6 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
             pasteBezel.isEnabled = false
         }
         return (pasteMenu, pasteBezel)
-    }
-
-    private func makeSparkleRow(settings: Settings) -> NSStackView {
-        let autoCheck = settings.checkbox(title: "Automatically check for updates", key: SettingsPath.checkForUpdates)
-        let checkNowButton = NSButton()
-        let delegate = (NSApplication.shared.delegate as? AppDelegate)!
-        checkNowButton.title = "Check Now"
-        checkNowButton.target = delegate
-        checkNowButton.action = #selector(delegate.checkSparkle(sender:))
-        checkNowButton.controlSize = .small
-        checkNowButton.bezelStyle = .rounded
-        let checkRow = NSStackView(views: [autoCheck, checkNowButton])
-        NSLayoutConstraint.activate([
-            autoCheck.leadingAnchor.constraint(greaterThanOrEqualTo: checkRow.leadingAnchor, constant: 0),
-            checkNowButton.trailingAnchor.constraint(greaterThanOrEqualTo: checkRow.trailingAnchor, constant: 0)
-        ])
-        return checkRow
     }
 
     override func viewDidLoad() {
@@ -141,8 +105,6 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
             displayNumView.leadingAnchor.constraint(equalTo: rememberNumView.leadingAnchor, constant: 160)
         ])
         let advancedMenuRow = makeAdvancedMenuRow(settings: settings)
-        let launchOnLogin = makeLaunchOnLogin(settings: settings)
-        let sparkleRow = makeSparkleRow(settings: settings)
         let bezelToTopRow = makeBezelToTopRow(settings: settings)
 
         let resetRow = makeResetRow()
@@ -150,7 +112,7 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         let grid = NSStackView(views: [
             pasteMenu, pasteBezel, bezelToTopRow, wrapBezel, stickyBezel,
             advancedMenuRow, makeSeparator(), stepperViews, makeSeparator(),
-            launchOnLogin, sparkleRow, makeSeparator(), resetRow
+            resetRow
         ])
         grid.orientation = .vertical
         grid.alignment = .leading
@@ -161,7 +123,6 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
             grid.topAnchor.constraint(greaterThanOrEqualTo: self.view.topAnchor, constant: 24),
             grid.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48),
             stepperViews.leadingAnchor.constraint(equalTo: grid.leadingAnchor, constant: 10),
-            sparkleRow.widthAnchor.constraint(equalTo: grid.widthAnchor),
             resetRow.widthAnchor.constraint(equalTo: grid.widthAnchor)
         ])
     }

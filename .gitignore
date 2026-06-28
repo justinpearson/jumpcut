@@ -64,3 +64,9 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+# macOS
+.DS_Store
+
+# Coverage / profiling artifacts (e.g. default.profraw from instrumented builds)
+*.profraw

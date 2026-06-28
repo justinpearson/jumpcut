@@ -131,6 +131,14 @@ public class MenuManager {
                 keyEquivalent: ""
             )
         )
+        let marketingVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
+        let versionItem = NSMenuItem(
+            title: "Version \(marketingVersion) (git \(AppDelegate.buildSHA))",
+            action: nil,
+            keyEquivalent: ""
+        )
+        versionItem.isEnabled = false
+        menu.addItem(versionItem)
         menu.addItem(NSMenuItem.separator())
         menu.addItem(
             NSMenuItem(

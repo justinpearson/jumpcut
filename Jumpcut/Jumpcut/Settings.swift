@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import ServiceManagement
 import ShortcutRecorder
 
 /* A set of user interface elements bound to our user defaults. */
@@ -21,12 +20,10 @@ enum SettingsPath: String {
     case bezelAlignment
     case bezelSelectionPastes
     case bezelToTop
-    case checkForUpdates
     case displayNum
     case hideStatusItem
     case ignoreLargeClippings
     case ignoreSensitiveClippingTypes
-    case launchOnStartup
     case mainHotkey
     case menuBehaviorFlags
     case menuIcon
@@ -60,12 +57,10 @@ private let settingsDefaults: [String: Any] = [
     SettingsPath.bezelAlignment.rawValue: BezelAlignment.center.rawValue,
     SettingsPath.bezelSelectionPastes.rawValue: true,
     SettingsPath.bezelToTop.rawValue: 1,
-    SettingsPath.checkForUpdates.rawValue: false,
     SettingsPath.displayNum.rawValue: 10,
     SettingsPath.hideStatusItem.rawValue: false,
     SettingsPath.ignoreLargeClippings.rawValue: true,
     SettingsPath.ignoreSensitiveClippingTypes.rawValue: true,
-    SettingsPath.launchOnStartup.rawValue: false,
     // Control-Option-V
     SettingsPath.mainHotkey.rawValue: [
         "charactersIgnoringModifiers": "v",
@@ -195,12 +190,6 @@ public class Settings: NSObject {
             UserDefaults.standard.removeObject(forKey: $0.key)
         }
         registerDefaults()
-        let helper = "net.sf.Jumpcut.JumpcutHelper"
-        if !SMLoginItemSetEnabled(helper as CFString, false) {
-            #if DEBUG
-                print("SMLoginItemSetEnabled for \(helper) (false) failed")
-            #endif
-        }
      }
 
     private func setAttributedTitle(button: NSButton, title: String) {

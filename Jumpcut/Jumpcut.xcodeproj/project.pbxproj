@@ -34,9 +34,7 @@
 		AA3115E2280A62B900CBAF91 /* ShortcutRecorder in Frameworks */ = {isa = PBXBuildFile; productRef = AA3115E1280A62B900CBAF91 /* ShortcutRecorder */; };
 		AA3115E5280A62CB00CBAF91 /* Sauce in Frameworks */ = {isa = PBXBuildFile; productRef = AA3115E4280A62CB00CBAF91 /* Sauce */; };
 		AA73BA942B0AB9D900B0EA1A /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA73BA932B0AB9D900B0EA1A /* Alerts.swift */; };
-		AA9CB9F52AF719CE00ADA6C1 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = AA9CB9F42AF719CE00ADA6C1 /* LaunchAtLogin */; };
 		AAD0C443280B7CB6003482B4 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD0C442280B7CB6003482B4 /* ServiceManagement.framework */; platformFilter = maccatalyst; };
-		AAD0C447280C9ECF003482B4 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = AAD0C446280C9ECF003482B4 /* Sparkle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,9 +94,7 @@
 			files = (
 				AA3115DF280A62A900CBAF91 /* HotKey in Frameworks */,
 				AA3115E2280A62B900CBAF91 /* ShortcutRecorder in Frameworks */,
-				AA9CB9F52AF719CE00ADA6C1 /* LaunchAtLogin in Frameworks */,
 				AAD0C443280B7CB6003482B4 /* ServiceManagement.framework in Frameworks */,
-				AAD0C447280C9ECF003482B4 /* Sparkle in Frameworks */,
 				AA3115E5280A62CB00CBAF91 /* Sauce in Frameworks */,
 				AA3115DC280A629900CBAF91 /* Preferences in Frameworks */,
 			);
@@ -222,7 +218,6 @@
 				AA311582280A60DB00CBAF91 /* Sources */,
 				AA311583280A60DB00CBAF91 /* Frameworks */,
 				AA311584280A60DB00CBAF91 /* Resources */,
-				AA9CB9F62AF7267E00ADA6C1 /* Copy “Launch at Login Helper” */,
 			);
 			buildRules = (
 			);
@@ -234,8 +229,6 @@
 				AA3115DE280A62A900CBAF91 /* HotKey */,
 				AA3115E1280A62B900CBAF91 /* ShortcutRecorder */,
 				AA3115E4280A62CB00CBAF91 /* Sauce */,
-				AAD0C446280C9ECF003482B4 /* Sparkle */,
-				AA9CB9F42AF719CE00ADA6C1 /* LaunchAtLogin */,
 			);
 			productName = Jumpcut;
 			productReference = AA311586280A60DB00CBAF91 /* Jumpcut.app */;
@@ -335,8 +328,6 @@
 				AA3115DD280A62A900CBAF91 /* XCRemoteSwiftPackageReference "HotKey" */,
 				AA3115E0280A62B900CBAF91 /* XCRemoteSwiftPackageReference "ShortcutRecorder" */,
 				AA3115E3280A62CB00CBAF91 /* XCRemoteSwiftPackageReference "Sauce" */,
-				AAD0C445280C9ECF003482B4 /* XCRemoteSwiftPackageReference "Sparkle" */,
-				AA9CB9F32AF719CE00ADA6C1 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */,
 			);
 			productRefGroup = AA311587280A60DB00CBAF91 /* Products */;
 			projectDirPath = "";
@@ -382,27 +373,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		AA9CB9F62AF7267E00ADA6C1 /* Copy “Launch at Login Helper” */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Copy “Launch at Login Helper”";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AA311582280A60DB00CBAF91 /* Sources */ = {
@@ -521,7 +491,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -576,7 +546,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -595,7 +565,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 20231204;
-				DEVELOPMENT_TEAM = 4987SK7L6Z;
+				DEVELOPMENT_TEAM = AMXKCKJQUB;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Jumpcut/Info.plist;
@@ -626,7 +596,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 20231204;
-				DEVELOPMENT_TEAM = 4987SK7L6Z;
+				DEVELOPMENT_TEAM = AMXKCKJQUB;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Jumpcut/Info.plist;
@@ -654,9 +624,9 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4987SK7L6Z;
+				DEVELOPMENT_TEAM = AMXKCKJQUB;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.2;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.sf.Jumpcut.JumpcutTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -673,9 +643,9 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4987SK7L6Z;
+				DEVELOPMENT_TEAM = AMXKCKJQUB;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.2;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.sf.Jumpcut.JumpcutTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -691,7 +661,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4987SK7L6Z;
+				DEVELOPMENT_TEAM = AMXKCKJQUB;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.sf.Jumpcut.JumpcutUITests;
@@ -708,7 +678,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4987SK7L6Z;
+				DEVELOPMENT_TEAM = AMXKCKJQUB;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.sf.Jumpcut.JumpcutUITests;
@@ -730,7 +700,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4987SK7L6Z;
+				DEVELOPMENT_TEAM = AMXKCKJQUB;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = JumpcutHelper/Info.plist;
@@ -740,7 +710,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.sf.Jumpcut.JumpcutHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -762,7 +732,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4987SK7L6Z;
+				DEVELOPMENT_TEAM = AMXKCKJQUB;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = JumpcutHelper/Info.plist;
@@ -772,7 +742,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.sf.Jumpcut.JumpcutHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -865,22 +835,6 @@
 				kind = branch;
 			};
 		};
-		AA9CB9F32AF719CE00ADA6C1 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
-			requirement = {
-				kind = exactVersion;
-				version = 4.2.0;
-			};
-		};
-		AAD0C445280C9ECF003482B4 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sparkle-project/Sparkle";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -903,16 +857,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AA3115E3280A62CB00CBAF91 /* XCRemoteSwiftPackageReference "Sauce" */;
 			productName = Sauce;
-		};
-		AA9CB9F42AF719CE00ADA6C1 /* LaunchAtLogin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AA9CB9F32AF719CE00ADA6C1 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
-			productName = LaunchAtLogin;
-		};
-		AAD0C446280C9ECF003482B4 /* Sparkle */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AAD0C445280C9ECF003482B4 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
